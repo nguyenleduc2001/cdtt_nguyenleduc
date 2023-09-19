@@ -1,0 +1,15 @@
+## Họ Và Tên: Nguyễn Lê Đức     
+## MSSV: 2121110018       
+## Lớp: CCQ2111A
+###### Đề Tài : Trang Web bán hàng
+###### Ngôn Ngữ : PHP (Laravel)
+##Kế hoạch : 
+###### -Tuần 1 : Từ ngày 5/9/2023 đến ngày 11/9/2023 : Thiết kế database + Thiết kế giao diện admin
+###### -Tuân 2: Từ ngày 12/9/2023 đến ngày 18/9/2023: Thiết kế chức năng quản lí thương hiệu + danh mục
+###### -Tuần 3: Từ ngày 19/9/2023 đến ngày 25/9/2023: Thiết kế chức năng quản lí chủ đề + bài viết + trang đơn
+###### -Tuần 4: Từ ngày 26/9/2023 đến ngày 2/10/2023: Thiết chức năng quản lí sản phẩm + banner 
+###### -Tuần 5: Từ ngày 3/10/2023 đến ngày 9/10/2023 : Thiết kế chức năng quản lí menu + đơn hàng 
+###### -Tuần 6: Từ ngày 10/10/2023 đến ngày 16/10/2023: Thiết kế chức năng quản lí thành viên + liên hệ + khách hàng + đăng nhập admin
+###### -Tuần 7: Từ ngày 16/10/2023 đến ngày 23/10/2023: Thiết kế trang chủ + trang đơn + đăng nhập user
+###### -Tuần 8: Từ ngày 24/10/2023 đến ngày 30/10/2023: Thiết kế trang tất cả sản phẩm + sản phẩm theo danh mục + sản phẩm theo thương hiệu
+###### -Tuần 9 : Từ ngày 31/10/2023 đến ngày 6/11/2023 : Thiết kế trang chi tiết sản phẩm + bài viết + liên hệ + tìm kiếm
