@@ -22,7 +22,7 @@ class StoreSliderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:nld_slider|min:5',
+            'name' => 'required|unique:slider|min:5',
         ];
     }
     public function messages(): array

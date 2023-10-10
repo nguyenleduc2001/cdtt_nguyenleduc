@@ -18,9 +18,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        $title ='Danh sách sản phẩm';                                                                                                             #$title...
-        $list = Post::where('status','<>','0')->get();                                                                                       #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
-        return view('backend.post.index',compact('list','title'));
+        $title ='Danh sách sản phẩm';                                                                                                         
+        $list = Post::where('status','<>','0')->get();
+        $html_topic_id = '';
+        foreach ($list as $item) {
+            $html_topic_id .= "<coption value =''" . ($item->topic_id + 1) . "'>" . $item->name . "</option>";
+        }                                                                             
+        return view('backend.post.index',compact('html_topic_id', 'list','title'));
     }
 
     /**
@@ -105,7 +109,7 @@ class PostController extends Controller
 
 
         $title = "Cập nhập mẫu tin";
-        return view('backend.post.edit',compact('row','title',));
+        return view('backend.post.edit',compact('row','title','list'));
     }
 
     /**
@@ -161,6 +165,20 @@ class PostController extends Controller
         $row->delete();
             return redirect()->route('post.index')->with('message', ['type' => 'success', 'mgs' => 'Xóa sản phẩm thành công']);
 
+    }
+    public function delete($id)
+    {
+        $row = Post::find($id);
+        if ($row == NULL) {
+            return redirect()->route('post.index')->with('message', ['type' => 'danger', 'mgs' => 'Xóa không thành công']);
+        } else {
+            $row->status = 0;
+            $row->updated_at = date('Y-m-d H:i:s');
+            $row->updated_by = 1;
+            $row->save();
+
+            return redirect()->route('post.index')->with('message', ['type' => 'success', 'mgs' => 'Xóa thành công']);
+        }
     }
     public function trash()
     {                                                                                                        

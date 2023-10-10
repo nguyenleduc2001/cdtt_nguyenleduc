@@ -22,7 +22,7 @@ class StoreTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:nld_topic|min:5',
+            'name' => 'required|unique:topic|min:5',
             'metakey' => 'required',
             'metadesc' => 'required',
         ];

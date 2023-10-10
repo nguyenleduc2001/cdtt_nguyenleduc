@@ -2,8 +2,8 @@
 
 @section('title', $title ?? 'Trang quản lý')
 @section('content')
-    
-    <form action="{{ route('topic.update',['topic'=>$row->id]) }}" method="post" enctype="multipart/form-data">
+
+    <form action="{{ route('topic.update', ['topic' => $row->id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="content-wrapper">
@@ -31,27 +31,16 @@
 
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-12 text-right">
-                            <button type="submit" class="btn btn-sm btn-success">
-                                <i class="fas fa-save"></i>Lưu
-                            </button>
 
-                           
-                            <a href="{{ route('topic.index') }}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>Xóa</a>
-                                <a class="btn btn-sm btn-info" href="{{ route('topic.index') }}">
-                                    <i class="fas fa-arrow-circle-left"></i> QUAY VỀ DANH SÁCH
-                                </a>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-5">
                             <div class="mb-3">
 
                                 <label for="name">Tên danh mục</label>
-                                <input type="text" name="name" id="name" value="{{ old('name',$row->name) }}"
+                                <input type="text" name="name" id="name" value="{{ old('name', $row->name) }}"
                                     class="form-control">
 
                                 @if ($errors->has('name'))
@@ -63,63 +52,113 @@
                             </div>
                             <div class="mb-3">
                                 <label for="metakey">Từ khóa</label>
-                          <textarea name="metakey" id="metakey" class="form-control">{{ old('metakey',$row->metakey) }}</textarea>
+                                <textarea name="metakey" id="metakey" class="form-control">{{ old('metakey', $row->metakey) }}</textarea>
                                 @if ($errors->has('metakey'))
-                                <div class="text-danger">
-                                    {{ $errors->first('metakey') }}
-                                </div>
-                            @endif
+                                    <div class="text-danger">
+                                        {{ $errors->first('metakey') }}
+                                    </div>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label for="metadesc">Mô tả</label>
-                                <textarea name="metadesc" id="metadesc" class="form-control">{{ old('metadesc',$row->metadesc) }}</textarea>
+                                <textarea name="metadesc" id="metadesc" class="form-control">{{ old('metadesc', $row->metadesc) }}</textarea>
                                 @if ($errors->has('metadesc'))
-                                <div class="text-danger">
-                                    {{ $errors->first('metadesc') }}
-                                </div>
-                            @endif
+                                    <div class="text-danger">
+                                        {{ $errors->first('metadesc') }}
+                                    </div>
+                                @endif
                             </div>
-                        </div>
-                        <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="parent_id">Chuyên mục cha</label>
                                 <select name="parent_id" id="parent_id" class="form-control">
-                                    <option value="0" >Cấp cha</option>
+                                    <option value="0">Cấp cha</option>
                                     {!! $html_parent_id !!}
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="sort_order">Sắp xếp</label>
                                 <select name="sort_order" id="sort_order" class="form-control">
-                                    <option value="0" >Cấp cha</option>
-                                    {!!$html_sort_order !!}
+                                    <option value="0">Cấp cha</option>
+                                    {!! $html_sort_order !!}
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label for="image">Hình đại diện</label>
                                 <input name="image" id="image" type="file" class="form-control btn-sm">
                             </div>
+                            <div class="col-12 text-right">
+                            <button type="submit" class="btn btn-sm btn-success">
+                                <i class="fas fa-save"></i>Lưu
+                            </button>
+                            <a href="{{ route('topic.index') }}" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>Xóa</a>
+                            <a class="btn btn-sm btn-info" href="{{ route('topic.index') }}">
+                                <i class="fas fa-arrow-circle-left"></i> QUAY VỀ DANH SÁCH
+                            </a>
                         </div>
+                        </div>
+                        
+                         <div class="col-7">
+                        <div class="card-body">
+                            @includeIf('backend.message')
+                            <table class="table table-bordered table-striped" id="dataTable">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th class="text-center" style="width: 5%">
+                                            <div class="form-group select-all">
+                                                <input type="checkbox">
+                                            </div>
+                                        </th>
+                                        <th class="text-center" style="width:8%">IMAGE</th>
+                                        <th class="text-center" style="width:10%">CHỦ ĐỀ</th>
+                                        <th class="text-center" style="width:15%">NGÀY TẠO</th>
+                                        <th class="text-center" style="width:20%">CHỨC NĂNG</th>
+                                        <th class="text-center" style="width:5%">ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($list as $row)
+                                        <tr>
+                                            <td><input type="checkbox" name="checkId[]" value="{{ $row->id }}"></td>
+                                            <td><img src="{{ asset('images/topic/' . $row->image) }}"
+                                                    class="img-fluid" alt="{{ $row->image }}"></td>
+                                            <td>{{ $row->name }}</td>
+                                          
+                                            <td>{{ $row->created_at }}</td>
+                                            <td>
+                                                @if ($row->status == 2)
+                                                    <a href="{{ route('topic.status', ['topic' => $row->id]) }}"
+                                                        class="btn btn-sm btn-success">
+                                                        <i class="fas fa-toggle-on"></i></a>
+                                                @else
+                                                    <a href="{{ route('topic.status', ['topic' => $row->id]) }}"
+                                                        class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-toggle-off"></i></a>
+                                                @endif
+
+                                                <a href="{{ route('topic.edit', ['topic' => $row->id]) }}"
+                                                    class="btn btn-sm btn-info"> <i class="fas fa-wrench"></i></a>
+                                                <a href="{{ route('topic.show', ['topic' => $row->id]) }}"
+                                                    class="btn btn-sm btn-primary "><i class="far fa-eye"></i></a>
+                                                <a href="{{ route('topic.trash', ['topic' => $row->id]) }}"
+                                                    class="btn btn-sm btn-danger "><i class="fas fa-trash"></i></a>
+                                            </td>
+                                            <td>{{ $row->id }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>hnee
+
+
                     </div>
                 </div>
         </div>
         <!-- /.card-body -->
         <div class="card-header">
-            <div class="row">
-                <div class="col-12 text-right">
-                    <button type="submit" class="btn btn-sm btn-success">
-                        <i class="fas fa-save"></i>Lưu
-                    </button>
-                   
-                    <a href="{{ route('topic.index') }}" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash"></i>Xóa</a>
-                        <a class="btn btn-sm btn-info" href="{{ route('topic.index') }}">
-                            <i class="fas fa-arrow-circle-left"></i> QUAY VỀ DANH SÁCH
-                        </a>
-                </div>
-            </div>
-      </div>
+            
+        </div>
         <!-- /.card-footer-->
         </div>
         <!-- /.card -->

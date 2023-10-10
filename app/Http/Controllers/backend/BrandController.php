@@ -19,8 +19,13 @@ class BrandController extends Controller
     public function index()
     {
         $title ='Danh sách thương hiệu';                                                                                                             #$title...
-        $list = Brand::where('status','<>','0')->get();                                                                                       #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
-        return view('backend.brand.index',compact('list','title'));
+        $list = Brand::where('status','!=','0')->get();
+        $html_sort_order = '';
+        foreach ($list as $item) {
+            $html_sort_order .= "<coption value =''" . ($item->sort_order + 1) . "'>" . $item->name . "</option>";
+        }                                                                                     #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
+        return view('backend.brand.index',compact('list','title','html_sort_order'));
+     
     }
 
     /**
@@ -67,15 +72,9 @@ class BrandController extends Controller
                 $row->image = $fileName;
              }
         }
-
-
         $row->save();
-        return redirect()->route('brand.index')->with('message',['type' => 'success', 'mgs' => 'Thêm thành công']);
+         return redirect()->route('brand.index')->with('message',['type' => 'success', 'mgs' => 'Thêm thành công']);
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $row = Brand::find($id);                                                                                           //$row1=brand::where([['id','=',$id],['status','!=',0]])..
@@ -111,7 +110,7 @@ class BrandController extends Controller
             }
         }
         $title = "Cập nhập mẫu tin";
-        return view('backend.brand.edit',compact('row','title','html_sort_order'));
+        return view('backend.brand.edit',compact('list','row','title','html_sort_order'));
     }
 
     /**
@@ -144,7 +143,7 @@ class BrandController extends Controller
                 $fileName = $row ->slug. '.'.$extention;
                 $file->move(public_path('images/brand'),$fileName);
                 $row->image = $fileName;
-                //$brand ->image = $request->image;
+                $row ->image = $request->image;
              }
         }
 
@@ -194,6 +193,18 @@ class BrandController extends Controller
     {                                                                                                        
         $list = Brand::where('status','=','0')->orderBy('created_at','asc')->get();                                                                                   #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
         return view('backend.brand.trash',compact('list'));
+    }
+    public function restore($id)
+    {
+        $row = Brand::find($id);                                                                                           //$row1=Slider::where([['id','=',$id],['status','!=',0]])..
+        if ($row == NULL) {
+            return redirect()->route('brand.trash')->with('message', ['type' => 'danger', 'mgs' => 'Mẫu tin không tồn tại']);
+        }
+        $row->updated_at = date('Y-m-d H:i:s');
+        $row->updated_by = 1; 
+        $row->status = 2;
+        $row->save();
+        return redirect()->route('brand.trash')->with('message', ['type' => 'success', 'mgs' => 'Khôi phục sản phẩm thành công']);
     }
 }
 ?>

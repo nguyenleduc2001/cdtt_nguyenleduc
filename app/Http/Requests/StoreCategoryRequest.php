@@ -22,7 +22,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:nld_category|min:5',
+            'name' => 'required|unique:category|min:5',
             'metakey' => 'required',
             'metadesc' => 'required',
         ];

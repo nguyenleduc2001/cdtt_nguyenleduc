@@ -39,39 +39,46 @@
             </div>
             <div class="card-body">
                 @includeIf('backend.message')
-                <table class="table table-bordered table-striped ">
-                    <tr class=" bg-primary">
-                        <th class="text-center" style="width:20px;"><input type="checkbox" name="checkId[]"></th>
-                        <th class="text-center">TÊN DANH MỤC</th>
-                        <th class="text-center">SLUG</th>
-                        <th class="text-center" style="width:160px;">NGÀY TẠO</th>
-                        <th class="text-center" style="width:200px;">CHỨC NĂNG</th>
-                        <th class="text-center" style="width:20px;">ID</th>
-                    </tr>
-                    @foreach ($list as $row)
-                        <tr>
-                            <td><input type="checkbox" name="checkId[]" value="{{ $row->id }}"></td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->slug }}</td>
-                            <td>{{ $row->created_at }}</td>
-                            <td>
-                                <a href="{{ route('category.show', ['category' => $row->id]) }}"
-                                    class="btn btn-sm btn-success">
-                                    <i class="fa-solid fa-rotate-left"></i></a>
-
-                                <a href="{{ route('category.show', ['category' => $row->id]) }}"
-                                    class="btn btn-sm btn-primary "><i class="far fa-eye"></i></a>
-                                <form action="{{ route('category.destroy', ['category' => $row->id]) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>{{ $row->id }}</td>
+                <table class="table table-bordered table-striped " id="dataTable">
+                    <thead>
+                        <tr class=" bg-primary">
+                            <th class="text-center" style="width:20px;"><input type="checkbox" name="checkId[]  "></th>
+                            <th class="text-center" style="width:100px;">HÌNH ẢNH</th>
+                            <th class="text-center" style="width:260px;">TÊN DANH MỤC</th>
+                            <th class="text-center" style="width:160px;">SLUG</th>
+                            <th class="text-center" style="width:260px;">NGÀY TẠO</th>
+                            <th class="text-center" style="width:200px;">CHỨC NĂNG</th>
+                            <th class="text-center" style="width:20px;">ID</th>
                         </tr>
-                    @endforeach
+                    </thead>
+                    <tbody>
+                        @foreach ($list as $row)
+                            <tr>
+                                <td><input type="checkbox" name="checkId[]" value="{{ $row->id }}"></td>
+                                <td><img src="{{ asset('images/category/' . $row->image) }}" class="img-fluid"
+                                        alt="{{ $row->image }}"></td>
+                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->slug }}</td>
+                                <td>{{ $row->created_at }}</td>
+                                <td>
+                                    <a href="{{ route('category.restore', ['category' => $row->id]) }}"
+                                        class="btn btn-sm btn-success">
+                                        <i class="fas fa-undo-alt"></i></a>
+
+                                    <a href="{{ route('category.show', ['category' => $row->id]) }}"
+                                        class="btn btn-sm btn-primary "><i class="far fa-eye"></i></a>
+                                    <form action="{{ route('category.destroy', ['category' => $row->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>{{ $row->id }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
             <!-- /.card-body -->

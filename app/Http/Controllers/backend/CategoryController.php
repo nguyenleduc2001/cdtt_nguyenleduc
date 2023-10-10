@@ -20,8 +20,14 @@ class CategoryController extends Controller
     public function index()
     {
         $title = 'Danh sách danh mục';                                                                                                             #$title...
-        $list = Category::where('status', '!=', '0')->orderBy('status', 'asc')->get();                               //where                                                        #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
-        return view('backend.category.index', compact('list', 'title'));
+        $list = Category::where('status', '!=', '0')->orderBy('status', 'asc')->get();
+        $html_parent_id = '';
+        $html_sort_order = '';
+        foreach ($list as $item) {
+            $html_parent_id .= "<option value =''" . $item->id . "'>" . $item->name . "</option>";
+            $html_sort_order .= "<option value ='' " . ($item->sort_order + 1) . "'>" . $item->name . "</option>";
+        }                             //where                                                        #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
+        return view('backend.category.index', compact('html_parent_id', 'html_sort_order', 'list', 'title'));
     }
 
     public function create()
@@ -99,7 +105,7 @@ class CategoryController extends Controller
             }
         }
         $title = "Cập nhập mẫu tin";
-        return view('backend.category.edit', compact('row', 'title', 'html_sort_order', 'html_parent_id'));
+        return view('backend.category.edit', compact('list','row', 'title', 'html_sort_order', 'html_parent_id'));
     }
 
     /**
@@ -180,5 +186,17 @@ class CategoryController extends Controller
     {
         $list = Category::where('status', '=', '0')->orderBy('created_at', 'asc')->get();                                                                                   #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
         return view('backend.category.trash', compact('list'));
+    }
+    public function restore($id)
+    {
+        $row = Category::find($id);                                                                                           //$row1=Slider::where([['id','=',$id],['status','!=',0]])..
+        if ($row == NULL) {
+            return redirect()->route('category.trash')->with('message', ['type' => 'danger', 'mgs' => 'Mẫu tin không tồn tại']);
+        }
+        $row->updated_at = date('Y-m-d H:i:s');
+        $row->updated_by = 1;
+        $row->status = 2;
+        $row->save();
+        return redirect()->route('category.trash')->with('message', ['type' => 'success', 'mgs' => 'Khôi phục sản phẩm thành công']);
     }
 }

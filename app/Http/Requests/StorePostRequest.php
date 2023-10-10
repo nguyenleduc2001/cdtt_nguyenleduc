@@ -22,7 +22,7 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:nld_post|min:5',
+            'title' => 'required|unique:post|min:5',
             'metakey' => 'required',
             'metadesc' => 'required',
         ];

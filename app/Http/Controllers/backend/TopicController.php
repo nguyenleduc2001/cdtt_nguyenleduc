@@ -22,8 +22,14 @@ class TopicController extends Controller
     public function index()
     {
         $title = 'Danh sách sản phẩm';                                                                                                             #$title...
-        $list = Topic::where('id', '!=', '0')->get();                                                                                       #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
-        return view('backend.topic.index', compact('list', 'title'));
+        $list = Topic::where('status', '!=', '0')->get();
+        $html_parent_id = '';
+        $html_sort_order = '';
+        foreach ($list as $item) {
+            $html_parent_id .= "<option value =''" . $item->id . "'>" . $item->name . "</option>";
+            $html_sort_order .= "<option value ='' " . ($item->sort_order + 1) . "'>" . $item->name . "</option>";
+        }                                                                                      #orwhere la them 1 dieu kien nua {get lay nhieu mau tin} ['tenbien' => $list,'tieude' => $title]  ,compact($list)
+        return view('backend.topic.index', compact('html_parent_id', 'html_sort_order', 'list', 'title'));
     }
 
     /**
@@ -110,7 +116,7 @@ class TopicController extends Controller
             }
         }
         $title = "Cập nhập mẫu tin";
-        return view('backend.topic.edit', compact('row', 'title', 'html_sort_order', 'html_parent_id'));
+        return view('backend.topic.edit', compact('list','row', 'title', 'html_sort_order', 'html_parent_id'));
     }
 
     /**
@@ -159,6 +165,20 @@ class TopicController extends Controller
         $row->updated_by = 1;
         $row->save();
         return redirect()->route('topic.index')->with('message', ['type' => 'success', 'mgs' => 'Thay đổi trạng thái thành công']);
+    }
+    public function delete($id)
+    {
+        $row = Topic::find($id);
+        if ($row == NULL) {
+            return redirect()->route('topic.index')->with('message', ['type' => 'danger', 'mgs' => 'Xóa không thành công']);
+        } else {
+            $row->status = 0;
+            $row->updated_at = date('Y-m-d H:i:s');
+            $row->updated_by = 1;
+            $row->save();
+
+            return redirect()->route('topic.index')->with('message', ['type' => 'success', 'mgs' => 'Xóa thành công']);
+        }
     }
     /**
      * Remove the specified resource from storage.

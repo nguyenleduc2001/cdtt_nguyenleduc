@@ -23,7 +23,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'deliveryaddress' => 'required',
-            'deliveryname' => 'required|unique:nld_order|min:5',
+            'deliveryname' => 'required|unique:order|min:5',
             'deliveryphone' => 'required',
         ];
     }

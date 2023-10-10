@@ -22,7 +22,7 @@ class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:nld_contact|min:5',
+            'name' => 'required|unique:contact|min:5',
         ];
     }
     public function messages(): array

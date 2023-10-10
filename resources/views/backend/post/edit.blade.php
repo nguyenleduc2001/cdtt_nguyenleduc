@@ -46,74 +46,137 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                      <div class="col-md-9">
-                        <div class="mb-3">
-                          <label for="title">Tiêu đề bài viết</label>
-                          <input type="text" name="title" id="title" value="{{  old('title', $row->title) }}" class="form-control">
-                          @if ($errors->has('name'))
-                             <div class="text-danger">
-                                {{ $errors->first('name') }}
-                             </div>
-                           @endif
+
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="title">Tiêu đề bài viết</label>
+                                <input type="text" name="title" id="title" value="{{ old('title', $row->title) }}"
+                                    class="form-control">
+                                @if ($errors->has('name'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('name') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="detail">Chi tiết bài viết</label>
+                                <input type="text" name="detail" id="detail"
+                                    value="{{ old('detail', $row->detail) }}" class="form-control">
+                                @if ($errors->has('detail'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('detail') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="metakey">Từ khoá</label>
+                                <textarea type="text" name="metakey" id="metakey" class="form-control" value="{{ old('metakey', $row->metakey) }}"
+                                    class="form-control"></textarea>
+                                @if ($errors->has('metakey'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('metakey') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="metadesc">Mô tả</label>
+                                <textarea type="text" name="metadesc" id="metadesc" value="{{ old('metadesc', $row->metadesc) }}"
+                                    class="form-control"></textarea>
+                                @if ($errors->has('metadesc'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('metadesc') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                            <label for="image">Hình đại diện</label>
+                            <input name="image" id="name" type="file" class="form-control">
                         </div>
-                        <div class="mb-3">
-                          <label for="detail">Chi tiết bài viết</label>
-                          <input type="text" name="detail" id="detail" value="{{  old('detail', $row->detail) }}" class="form-control">
-                          @if ($errors->has('detail'))
-                             <div class="text-danger">
-                                {{ $errors->first('detail') }}
-                             </div>
-                           @endif
                         </div>
-                        <div class="mb-3">
-                          <label for="metakey">Từ khoá</label>
-                          <textarea type="text" name="metakey" id="metakey" class="form-control" value="{{  old('metakey', $row->metakey) }}" class="form-control"></textarea>
-                          @if ($errors ->has('metakey'))
-                          <div class="text-danger">
-                            {{ $errors->first('metakey') }}
-                          </div>
-                          @endif
-                        </div>
-                        <div class="mb-3">
-                          <label for="metadesc">Mô tả</label>
-                          <textarea type="text" name="metadesc" id="metadesc" value="{{  old('metadesc', $row->metadesc) }}" class="form-control"></textarea>
-                          @if ($errors ->has('metadesc'))
-                          <div class="text-danger">
-                            {{ $errors->first('metadesc') }}
-                          </div>
-                          @endif
-                        </div>
+                         <div class="col-7">
+                    <div class="card-body">
+                        @includeIf('backend.message')
+                        <table class="table table-bordered table-striped" id="dataTable">
+                            <thead>
+                                <tr class="bg-primary">
+                                    <th class="text-center" style="width: 5%">
+                                        <div class="form-group select-all">
+                                            <input type="checkbox">
+                                        </div>
+                                    </th>
+                                    <th class="text-center" style="width:10%">HÌNH</th>
+                                    <th class="text-center" style="width:20%">TIÊU ĐỀ BÀI VIẾT</th>
+                                    <th class="text-center" style="width:15%">NGÀY TẠO</th>
+                                    <th class="text-center" style="width:20%">CHỨC NĂNG</th>
+                                    <th class="text-center" style="width:5%">ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($list as $row)
+                                    <tr>
+                                        <td><input type="checkbox" name="checkId[]" value="{{ $row->id }}"></td>
+                                        <td>
+                                            <img src="{{ asset('images/post/' . $row->image) }}" class="img-fluid"
+                                                alt="{{ $row->image }}">
+                                        </td>
+                                        <td>{{ $row->title }}</td>
+
+
+                                        <td>{{ $row->created_at }}</td>
+                                        <td>
+                                            @if ($row->status == 2)
+                                                <a
+                                                    href="{{ route('topic.status', ['topic' => $row->id]) }}"class="btn btn-sm btn-success">
+                                                    <i class="fas fa-toggle-on"></i></a>
+                                            @else
+                                                <a
+                                                    href="{{ route('topic.status', ['topic' => $row->id]) }}"class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-toggle-off"></i></a>
+                                            @endif
+                                            <a href="{{ route('post.edit', ['post' => $row->id]) }}"
+                                                class="btn btn-sm btn-info"> <i class="fas fa-wrench"></i></a>
+                                            <a href="{{ route('post.show', ['post' => $row->id]) }}"
+                                                class="btn btn-sm bg-primary "><i class="far fa-eye"></i></a>
+                                            <a href="{{ route('post.delete', ['post' => $row->id]) }}"
+                                                class="btn btn-sm btn-danger "><i class="fas fa-trash"></i></a>
+                                        </td>
+                                        <td>{{ $row->id }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                        <div class="col-md-3">
-                      <div class="mb-3">
-                        <label for="image">Hình đại diện</label>
-                        <input name="image" id="name" type="file" class="form-control">
-                    </div>
-                  </div>
-                  </div>
-        <!-- /.card-body -->
-        <div class="card-header">
-            <div class="row">
-                <div class="col-12 text-right">
-                    <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i>Lưu</button>
-
-
-
-                    <a href="{{ route('post.index') }}" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash"></i>Xóa</a>
-                    <a class="btn btn-sm btn-info" href="{{ route('post.index') }}">
-                        <i class="fas fa-arrow-circle-left"></i> QUAY VỀ DANH SÁCH
-                    </a>
                 </div>
-            </div>
-        </div>
 
-        <!-- /.card-footer-->
-        </div>
-        <!-- /.card -->
+                    </div>
 
-        </section>
-        <!-- /.content -->
+
+
+
+                    <!-- /.card-body -->
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <button type="submit" class="btn btn-sm btn-success"><i
+                                        class="fas fa-save"></i>Lưu</button>
+
+
+
+                                <a href="{{ route('post.index') }}" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>Xóa</a>
+                                <a class="btn btn-sm btn-info" href="{{ route('post.index') }}">
+                                    <i class="fas fa-arrow-circle-left"></i> QUAY VỀ DANH SÁCH
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+
+            </section>
+            <!-- /.content -->
         </div>
     </form>
 @endsection

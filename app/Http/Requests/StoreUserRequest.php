@@ -22,25 +22,27 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|unique:nld_user|min:5|max:30',
-            'usename'=>'required',
-            'password'=>'required|min:5|max:30',
-            'email'=>'required',
-            'phone'=>'required',
-            'gender'=>'required',
-            'address'=>'required'
+            'name' => 'required|unique:user|min:5|max:30',
+            'usename' => 'required',
+            'password' => 'required|min:5|max:30',
+            'email' => 'required',
+            'phone' => 'required',
+            'gender' => 'required',
+            'address' => 'required',
+            'roles' => 'required'
         ];
     }
     public function messages(): array
     {
-        return[
-            'name.required'=>'Tên bắt buộc phải nhập',
-            'usename.required'=>'Tên đăng nhập bắt buộc phải nhập',
-            'password.required'=>'Mật khẩu bắt buộc phải nhập',
-            'email.required'=>'Email bắt buộc phải nhập',
-            'phone.required'=>'Số điện thoại bắt buộc phải nhập',
-            'gender.required'=>'Giới tính bắt buộc phải nhập',
-            'address.required'=>'Địa chỉ bắt buộc phải nhập'
+        return [
+            'name.required' => 'Tên bắt buộc phải nhập',
+            'usename.required' => 'Tên đăng nhập bắt buộc phải nhập',
+            'password.required' => 'Mật khẩu bắt buộc phải nhập',
+            'email.required' => 'Email bắt buộc phải nhập',
+            'phone.required' => 'Số điện thoại bắt buộc phải nhập',
+            'gender.required' => 'Giới tính bắt buộc phải nhập',
+            'address.required' => 'Địa chỉ bắt buộc phải nhập',
+            'roles.required' => 'Phân quyền bắt buộc phải nhập'
         ];
     }
 }

@@ -58,7 +58,7 @@
                   <td>{{ $row->image }}</td>
                   <td>{{ $row->created_at }}</td>
                   <td>
-                    <a href="{{ route('brand.show',['brand' => $row ->id]) }}" class="btn btn-sm btn-success">
+                    <a href="{{ route('brand.restore',['brand' => $row ->id]) }}" class="btn btn-sm btn-success">
                      <i class="fas fa-undo-alt"></i></a>
                     <a href="{{ route('brand.edit',['brand' => $row ->id]) }}" class="btn btn-sm btn-info" > <i class="fas fa-wrench"></i></a>
                     <a href="{{ route('brand.show',['brand' => $row ->id]) }}" class="btn btn-sm bg-primary "><i class="far fa-eye"></i></a>

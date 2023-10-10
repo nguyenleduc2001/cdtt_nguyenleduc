@@ -6,6 +6,7 @@
 @endphp
 <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
   @csrf
+     @method('post')
     <!-- Main content -->
     <section class="content">
 
@@ -120,6 +121,19 @@
                               @if ($errors->has('address'))
                                   <div class="text-danger">
                                       {{ $errors->first('address') }}
+                                  </div>
+                              @endif
+  
+                          </div>
+                          <div class="mb-3">
+
+                              <label for="roles">Roles</label>
+                              <input type="text" name="roles" id="roles" value="{{ old('roles') }}"
+                                  class="form-control">
+  
+                              @if ($errors->has('roles'))
+                                  <div class="text-danger">
+                                      {{ $errors->first('roles') }}
                                   </div>
                               @endif
   
